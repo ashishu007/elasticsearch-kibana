@@ -27,17 +27,17 @@ Kibana is a data visualization and management tool for Elasticsearch that provid
 
 3. Go to [http://localhost:9200/](http://localhost:9200/) and you should see something like this:
 
-![es_open](/site/images/es_open.jpg)
+![es_open](/install/images/es_open.jpg)
 
 4. Now select the Kibana folder to run the .bat file. It should now open in the command line window. Point your browser at [http://localhost:5601](http://localhost:5601) and you should see something like this:
 
-![kb_open](/site/images/kb_open.jpg)
+![kb_open](/install/images/kb_open.jpg)
 
 On the top-left corner, click the three parallel lines to open the menu. Now scroll-down to find the `Dev Tools` option under `Management` section. Click it to go to the console where we will be writing the queries.
 
 In a production system Elasticsearch would typically run on a cloud server with client side JavaScript applications passing information back and fore in JSON data format to the API made available by Elasticsearch. The Kibana console allows us to simulate sending requests (in the left-hand pane) and receiving answers (in the right-hand pane). This allows us to explore Elasticsearch without building the frontend application
 
-ElasticSearch is open source and can be installed on your own machine. Check out [this site](https://ashishu007.github.io/elasticsearch-kibana/install) for information on installing on Windows. 
+ElasticSearch is open source and can be installed on your own machine. Check out [this page](https://ashishu007.github.io/elasticsearch-kibana/install) for information on installing on Windows. 
 
 ### Add Individual Documents to the Index
 
@@ -59,7 +59,7 @@ POST irdocuments/_doc/1
 
 The response on the right should be something like this (if you copy and paste watch out for quotation mark errors):
 
-![q1](/site/images/q1.png)
+![q1](/install/images/q1.png)
 
 Verify that the document has been added trying:
 
@@ -69,7 +69,7 @@ GET irdocuments/_doc/1
 
 The response should be like this:
 
-![q2](/site/images/q2.png)
+![q2](/install/images/q2.png)
 
 Add the other 3 documents from IRDocuments and verify they have been added. You can try the following query to retrieve all the documents from the index irdocuments:
 
@@ -128,7 +128,7 @@ GET irdocuments/_search
 
 Compare the result here with the result you got previous time running this query (for individual documents). You’ll only get top 10 results from this query. 
  
-![doc_q1](/site/images/doc_q1.png)
+![doc_q1](/install/images/doc_q1.png)
 
 ### Queries in Elasticsearch 
 
@@ -312,7 +312,7 @@ POST irdocuments/_analyze
 
 The result should show only two words: [deja, vu] 
 
-![app](/site/images/app.png)
+![app](/install/images/app.png)
 
 ### Appendix-Py-Script
 

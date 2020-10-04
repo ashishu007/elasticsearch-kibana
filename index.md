@@ -105,7 +105,7 @@ Verify you have been successful.
 
 ### Indexing a Set of Documents in Elasticsearch
 
-Elasticsearch offers a Bulk API that allows us to perform add, delete, update and create operations in bulk for many documents at a time. Since the documents in Elasticsearch are represented in JSON format, we first need to convert our txt files into a predefined JSON format. This has already been done for us for our larger dataset with a _python script (see Appendix 2)_, the output of which is available as `all_docs.json` in lab resources on Moodle. 
+Elasticsearch offers a Bulk API that allows us to perform add, delete, update and create operations in bulk for many documents at a time. Since the documents in Elasticsearch are represented in JSON format, we first need to convert our txt files into a predefined JSON format. This has already been done for us for our larger dataset with a python script (see [Appendix-Py-script](#appendix-py-script)), the output of which is available as `all_docs.json` in lab resources on Moodle. 
 
 To get more insight for Bulk API please visit [this link](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html).
 
@@ -186,7 +186,7 @@ Basic information on search is available at [https://www.elastic.co/guide/en/ela
 
 #### Ranked queries with BM25
 
-It is easy to perform ranked queries. The scores are based on the **BM25 algorithm** by default using the standard analyser (however, you can change to alternative models by setting up a custom analyser, see [Appendix](#appendix) for more details).
+It is easy to perform ranked queries. The scores are based on the **BM25 algorithm** by default using the standard analyser (however, you can change to alternative models by setting up a custom analyser, see [Appendix](#appendix-analyzers) for more details).
 
 For example, a ranked query for documents about "**deep learning**" can be written as:
 
@@ -205,7 +205,7 @@ Note the documents are ranked by score:
 We have just touched the surface of the functionality available in ElasticSearch today. You will find more detailed information about Elasticsearch at [this link](https://www.elastic.co/guide/en/elasticsearch/reference/7.4/index.html).
 
 
-### Appendix
+### Appendix-Analyzers
 
 You can add different types of analyzers in your index in Elasticsearch. For example, applying a stop word removal on your index.
 
@@ -313,3 +313,41 @@ POST irdocuments/_analyze
 The result should show only two words: [deja, vu] 
 
 ![app](/site/images/app.png)
+
+### Appendix-Py-Script
+
+```py
+import json, os, re
+
+txt_files = "C:\\Users\\User\\Downloads\\CourseworkResourses\\CourseworkResourses\\Documents\\"
+
+ctr = 1
+j = []
+
+for txt in os.listdir(txt_files):
+    s1 = ""
+    s2 = ""
+    print(ctr)
+    f = open(txt_files + txt, "r")
+    
+    l = f.readlines()
+
+    lines = list(filter(lambda x: not x.isspace(), l))
+
+    t = lines[2]
+    tt = t.strip('\n')
+
+    s1 = "{\"index\":{\"_id\":" + "\"" + str(ctr) + "\"" +  "}}"
+    
+    ctr += 1
+    for i in lines:
+        if i[0] == "#":
+            ii = i.replace('"', '')
+            iii = ii.strip('\n')
+            iv = iii.replace('#', '')
+            s2 = "{\"title\":\"" + tt + "\", \"content\":" + "\"" + str(iv) + "\"" + "}"
+
+    with open("all_docs.json", "a") as the_file:
+        the_file.write(s1 + "\n")
+        the_file.write(s2 + "\n")
+```

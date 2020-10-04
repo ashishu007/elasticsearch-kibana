@@ -103,3 +103,213 @@ DELETE irdocuments
 ```
 Verify you have been successful.
 
+### Indexing a Set of Documents in Elasticsearch
+
+Elasticsearch offers a Bulk API that allows us to perform add, delete, update and create operations in bulk for many documents at a time. Since the documents in Elasticsearch are represented in JSON format, we first need to convert our txt files into a predefined JSON format. This has already been done for us for our larger dataset with a _python script (see Appendix 2)_, the output of which is available as `all_docs.json` in lab resources on Moodle. 
+
+To get more insight for Bulk API please visit [this link](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html).
+
+Let’s get this data into Elasticsearch. Since the body of these requests can be big, it is recommended to do this via a tool that allows to load the body of a request from a file - for instance, using **curl**. Open a command prompt and navigate to the folder where `all_docs.json` file is saved. Run the following command:
+
+```sh
+curl -H "Content-Type: application/x-ndjson" -XPOST "localhost:9200/documents/_bulk?pretty" --data-binary @all_docs.json
+```
+
+This command will index all these documents to an index named **documents**. Be patient, it can take a while to upload the json. Verify the indexing by running the following query:
+
+```sh
+GET irdocuments/_search
+{
+	"query": {
+		"match_all": {}
+	}
+}
+```
+
+Compare the result here with the result you got previous time running this query (for individual documents). You’ll only get top 10 results from this query. 
+ 
+![doc_q1](/site/images/doc_q1.png)
+
+### Queries in Elasticsearch 
+
+#### Boolean
+
+Let’s start with Boolean queries. In the boolean query, there are four kinds of occurrences: must, should, must_not and filter. must mimics the boolean "**AND**". For example, if we are searching for documents with "**case-base**" in content and with "**deep learning**" in title, try the bool DSL query:
+
+```sh
+GET documents/_search
+{
+  "query" : {
+    "bool" : {
+      "must": [{
+          "match": {
+              "content": "case-based"
+          }
+      }, {
+          "match": {
+              "title": "deep learning"
+          }
+      }]
+    }
+  }
+}
+```
+
+Try describing this query in Boolean Logic.
+
+The functionality of should somewhat corresponds to the Boolean “**OR**”. Let’s look at an example, assume you want to search for either “**NLP**” or “**deep learning**” in the title, and if either of the criteria matches the document should be returned with the result. The query might look like:
+
+```sh
+GET documents/_search
+{
+  "query" : {
+    "bool" : {
+      "should": [{
+          "match": {
+              "title": "deep learning"
+          }
+      }, {
+          "match": {
+              "title": "nlp"
+          }
+      }]
+    }
+  }
+}
+```
+
+Again try describing this query in Boolean Logic.
+
+Try some queries using _should_ and filter. Note _filter_ can be used effectively with numeric data but is also quite similar to _must_, in that the term has to appear in the document; however, they do not contribute to the score. 
+
+Basic information on search is available at [https://www.elastic.co/guide/en/elasticsearch/reference/7.0/getting-started-search.html](https://www.elastic.co/guide/en/elasticsearch/reference/7.0/getting-started-search.html)
+
+#### Ranked queries with BM25
+
+It is easy to perform ranked queries. The scores are based on the **BM25 algorithm** by default using the standard analyser (however, you can change to alternative models by setting up a custom analyser, see [Appendix](#appendix) for more details).
+
+For example, a ranked query for documents about "**deep learning**" can be written as:
+
+```sh
+GET documents/_search
+{
+  "query": {"match": {"content": "deep learning"}}
+}
+```
+
+Note the documents are ranked by score:
+* Try this query but replace “**match**” with “**match_phrase**”. Compare the results.
+* Now try one of the queries from the completed AnalysisHandout sheet from the coursework. Compare the results from tf, idf, and tf*idf with those obtained here.
+
+
+We have just touched the surface of the functionality available in ElasticSearch today. You will find more detailed information about Elasticsearch at [this link](https://www.elastic.co/guide/en/elasticsearch/reference/7.4/index.html).
+
+
+### Appendix
+
+You can add different types of analyzers in your index in Elasticsearch. For example, applying a stop word removal on your index.
+
+To define an analyser in an index, we need to first define the mappings here. For this, run the following command on Kibana console:
+
+```sh
+PUT documents/
+{
+ "settings": {
+   "analysis": {
+     "analyzer": {
+       "my_analyzer": {
+         "type":       "stop",
+         "stopwords":  "_english_"
+       }
+     }
+   }
+ },
+ "mappings": {
+   "properties": {
+     "title":    { "type": "text" },
+     "content": { "type": "text", "analyzer": "my_analyzer"
+     }
+    }
+  }
+}
+```
+
+Make sure there is no other existing index with name ***documnets***. Now let’s add some data to the index ***documents***. Open a command prompt, navigate to the folder where the JSON file name ***all_docs.json*** (from indexing example) is saved. Run the following command to add the JSON to our index.
+
+```sh
+curl -H "Content-Type: application/x-ndjson" -XPOST "localhost:9200/documents/_bulk?pretty" --data-binary @all_docs.json
+```
+
+Go to Kibana console and run following command to verify the indexing: 
+
+```sh
+GET documents/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+```
+
+You should see the indexed files here.
+
+Now to verify the stop-word removal from indexing run the following command:
+
+```sh
+GET /documents/_search
+{
+  "query": { 
+    "match": { 
+      "content": "the" 
+    }
+  }
+}
+```
+
+You should see a result with 0 hits, because word “the” is not indexed here.
+
+You can also customize the analyzers according to your use. Let’s say you want to apply an html filter as an analyser. You would need to create new mapping on different index. Changing the mapping of an existing field could invalidate data that’s already indexed. If you need to change the mapping of a field, create a new index with the correct mappings and re-index your data into that index. 
+
+Let’s make a different index named irdocuments. Run the following command:
+```sh
+PUT irdocuments/
+{
+ "settings": {
+   "analysis": {
+     "analyzer": {
+       "blogs_analyzer": {
+         "type": "custom",
+         "tokenizer": "standard",
+         "stopwords": "_english_",
+         "char_filter": "html_strip",
+         "filter": [
+	    "stop",
+            "lowercase",
+            "asciifolding"
+         ]
+       }
+     }
+   }
+ },
+ "mappings": {
+   "properties": {
+     "title":    { "type": "text" },
+     "content": { "type": "text", "analyzer": "blogs_analyzer" }
+    }
+  }
+}
+```
+
+Let’s run an example query to verify our analyser:
+
+```sh
+POST irdocuments/_analyze
+{
+  "analyzer": "blogs_analyzer", 
+  "text": "is this the <b>déjà vu</b>?."
+}
+```
+
+The result should show only two words: [deja, vu] 
+
+![app](/site/images/app.png)

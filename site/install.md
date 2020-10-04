@@ -1,15 +1,15 @@
-## Install ElasticSearch and Kibana
+## Install Elasticsearch and Kibana
 
 Since both ElasticSearch and Kibana is written in Java, its mandatory to have the current JDK installed. If not, go to [this page](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) and install the latest JDK.
 
 ### Download and Unzip Packages
 
 * Download the **Windows** `.zip` packages for **elasticsearch** and **kibana** from the following links:
-    * **ElasticSeacrh**: [https://www.elastic.co/downloads/elasticsearch](https://www.elastic.co/downloads/elasticsearch)
+    * **Elasticseacrh**: [https://www.elastic.co/downloads/elasticsearch](https://www.elastic.co/downloads/elasticsearch)
     * **Kibana**: [https://www.elastic.co/downloads/kibana](https://www.elastic.co/downloads/kibana)
 
 * After downloading, unzip the files to some location. Let's say
-    * **ElasticSeacrh**: `C:\Users\ashis\Downloads\elasticsearch-7.9.2-windows-x86_64`
+    * **Elasticseacrh**: `C:\Users\ashis\Downloads\elasticsearch-7.9.2-windows-x86_64`
     * **Kibana**: `C:\Users\ashis\Downloads\kibana-7.9.2-windows-x86_64`
 
 ### Verify the JAVA_HOME path

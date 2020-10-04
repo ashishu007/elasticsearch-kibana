@@ -1,4 +1,4 @@
-## ElasticSearch and Kibana for IR
+## Elasticsearch and Kibana for IR
 
 ## Objectives
 
@@ -10,9 +10,9 @@ The objectives of this lab are:
 
 You will install and run Elasticsearch and employ a console available on Kibana to load and search our document collections (Documents and IRDocuments).
 
-To install **ElasticSearch** and **Kibana**, goto [this page](https://ashishu007.github.io/elasticsearch-kibana/site/install).
+To install **Elasticsearch** and **Kibana**, goto [this page](https://ashishu007.github.io/elasticsearch-kibana/site/install).
 
-## ElasticSearch
+## Elasticsearch
 In the previous labs we have used a simple stand-alone retrieval engine. This has been great to allow us to easily try different approaches to indexing. However, it is not suitable for real production applications because it is not optimised to scale for large volume data in a cloud computing, client-server architecture. There are 2 widely used, open-source IR systems that can scale to massive volume applications. These are Apache Solr ([https://lucene.apache.org/solr/](https://lucene.apache.org/solr/)) and the more recent ElasticSearch ([https://www.elastic.co](https://www.elastic.co)). Both are built in Java, based on an IR engine called Lucene, and provide a server-side IR system that can be accessed via a REST API. ElasticSearch has become the industry standard for new applications. 
 
 ElasticSearch (ES) is a distributed, open source search and analytics engine for all types of data, including textual, numerical, geospatial, structured, and unstructured. Its speed and scalability along with the ability to index many types of content mean that it can be used for a wide range of applications. Core to its performance is an inverted index very similar to those we have already seen. 

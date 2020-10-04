@@ -10,7 +10,7 @@ The objectives of this lab are:
 
 You will install and run Elasticsearch and employ a console available on Kibana to load and search our document collections (Documents and IRDocuments).
 
-To install **Elasticsearch** and **Kibana**, goto [this page](https://ashishu007.github.io/elasticsearch-kibana/site/install).
+To install **Elasticsearch** and **Kibana**, goto [this page](https://ashishu007.github.io/elasticsearch-kibana/install).
 
 ## Elasticsearch
 In the previous labs we have used a simple stand-alone retrieval engine. This has been great to allow us to easily try different approaches to indexing. However, it is not suitable for real production applications because it is not optimised to scale for large volume data in a cloud computing, client-server architecture. There are 2 widely used, open-source IR systems that can scale to massive volume applications. These are Apache Solr ([https://lucene.apache.org/solr/](https://lucene.apache.org/solr/)) and the more recent ElasticSearch ([https://www.elastic.co](https://www.elastic.co)). Both are built in Java, based on an IR engine called Lucene, and provide a server-side IR system that can be accessed via a REST API. ElasticSearch has become the industry standard for new applications. 
@@ -37,7 +37,7 @@ On the top-left corner, click the three parallel lines to open the menu. Now scr
 
 In a production system Elasticsearch would typically run on a cloud server with client side JavaScript applications passing information back and fore in JSON data format to the API made available by Elasticsearch. The Kibana console allows us to simulate sending requests (in the left-hand pane) and receiving answers (in the right-hand pane). This allows us to explore Elasticsearch without building the frontend application
 
-ElasticSearch is open source and can be installed on your own machine. Check out [this site](https://ashishu007.github.io/elasticsearch-kibana/site/install) for information on installing on Windows. 
+ElasticSearch is open source and can be installed on your own machine. Check out [this site](https://ashishu007.github.io/elasticsearch-kibana/install) for information on installing on Windows. 
 
 ### Add Individual Documents to the Index
 

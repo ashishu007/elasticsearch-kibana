@@ -33,7 +33,7 @@ Kibana is a data visualization and management tool for Elasticsearch that provid
 
 ![kb_open](/install/images/kb_open.jpg)
 
-On the top-left corner, click the three parallel lines to open the menu. Now scroll-down to find the `Dev Tools` option under `Management` section. Click it to go to the console where we will be writing the queries.
+On the top-left corner, click the three parallel lines (<span class="math"><b>&#8801</b></span>) to open the menu. Now scroll-down to find the `Dev Tools` option under `Management` section. Click it to go to the console where we will be writing the queries.
 
 In a production system Elasticsearch would typically run on a cloud server with client side JavaScript applications passing information back and fore in JSON data format to the API made available by Elasticsearch. The Kibana console allows us to simulate sending requests (in the left-hand pane) and receiving answers (in the right-hand pane). This allows us to explore Elasticsearch without building the frontend application
 
